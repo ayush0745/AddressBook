@@ -29,6 +29,7 @@ public class AddressBookService {
 
 
     // Add contact to specific AddressBook
+    //updated a duplicate contact check
     public String addContact(String bookName, Contact contact) {
 
         AddressBook book = addressBookMap.get(bookName);
@@ -37,10 +38,19 @@ public class AddressBookService {
             return "AddressBook not found";
         }
 
+        boolean exists = book.getContacts()
+                .stream()
+                .anyMatch(c -> c.equals(contact));
+
+        if (exists) {
+            return "Duplicate contact not allowed";
+        }
+
         book.addContact(contact);
 
         return "Contact added successfully";
     }
+
 
 
     // Get contacts from AddressBook
