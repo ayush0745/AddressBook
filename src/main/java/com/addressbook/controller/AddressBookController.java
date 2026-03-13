@@ -15,23 +15,30 @@ public class AddressBookController {
     @Autowired
     private AddressBookService service;
 
-    // UC2 - Add Contact
+    // Add Contact
     @PostMapping("/contact")
     public Contact addContact(@RequestBody Contact contact) {
         return service.addContact(contact);
     }
 
-    // GET API (kept as requested)
+    // Get Contacts
     @GetMapping("/contacts")
     public List<Contact> getContacts() {
         return service.getAllContacts();
     }
 
-    // UC3 - Edit Contact
+    // Edit Contact
     @PutMapping("/edit/{firstName}")
     public Contact editContact(@PathVariable String firstName,
                                @RequestBody Contact contact) {
 
         return service.editContact(firstName, contact);
+    }
+
+    // UC4 Delete Contact
+    @DeleteMapping("/delete/{firstName}")
+    public String deleteContact(@PathVariable String firstName) {
+
+        return service.deleteContact(firstName);
     }
 }

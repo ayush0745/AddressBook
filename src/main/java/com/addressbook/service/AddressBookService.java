@@ -1,6 +1,7 @@
 package com.addressbook.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class AddressBookService {
         return contact;
     }
 
-    // Get All Contacts
+    // Get Contacts
     public List<Contact> getAllContacts() {
         return contactList;
     }
@@ -41,7 +42,23 @@ public class AddressBookService {
                 return contact;
             }
         }
-
         return null;
+    }
+
+    // UC4 Delete Contact
+    public String deleteContact(String firstName) {
+
+        Iterator<Contact> iterator = contactList.iterator();
+
+        while (iterator.hasNext()) {
+            Contact contact = iterator.next();
+
+            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
+                iterator.remove();
+                return "Contact Deleted Successfully";
+            }
+        }
+
+        return "Contact Not Found";
     }
 }
