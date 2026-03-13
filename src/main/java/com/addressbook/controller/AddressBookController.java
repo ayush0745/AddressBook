@@ -1,7 +1,5 @@
 package com.addressbook.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,30 +13,27 @@ public class AddressBookController {
     @Autowired
     private AddressBookService service;
 
-    // Add Contact
-    @PostMapping("/contact")
-    public Contact addContact(@RequestBody Contact contact) {
-        return service.addContact(contact);
+
+    // Create AddressBook
+    @PostMapping("/create/{name}")
+    public String createAddressBook(@PathVariable String name) {
+        return service.createAddressBook(name);
     }
+
+
+    // Add Contact to AddressBook
+    @PostMapping("/{bookName}/contact")
+    public String addContact(@PathVariable String bookName,
+                             @RequestBody Contact contact) {
+
+        return service.addContact(bookName, contact);
+    }
+
 
     // Get Contacts
-    @GetMapping("/contacts")
-    public List<Contact> getContacts() {
-        return service.getAllContacts();
-    }
+    @GetMapping("/{bookName}/contacts")
+    public Object getContacts(@PathVariable String bookName) {
 
-    // Edit Contact
-    @PutMapping("/edit/{firstName}")
-    public Contact editContact(@PathVariable String firstName,
-                               @RequestBody Contact contact) {
-
-        return service.editContact(firstName, contact);
-    }
-
-    // UC4 Delete Contact
-    @DeleteMapping("/delete/{firstName}")
-    public String deleteContact(@PathVariable String firstName) {
-
-        return service.deleteContact(firstName);
+        return service.getContacts(bookName);
     }
 }

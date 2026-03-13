@@ -1,64 +1,57 @@
 package com.addressbook.service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.addressbook.model.AddressBook;
 import com.addressbook.model.Contact;
 
 @Service
 public class AddressBookService {
 
-    private List<Contact> contactList = new ArrayList<>();
+    // Dictionary of AddressBook name → AddressBook
+    private Map<String, AddressBook> addressBookMap = new HashMap<>();
 
-    // Add Contact
-    public Contact addContact(Contact contact) {
-        contactList.add(contact);
-        return contact;
-    }
 
-    // Get Contacts
-    public List<Contact> getAllContacts() {
-        return contactList;
-    }
+    // Create new AddressBook
+    public String createAddressBook(String name) {
 
-    // Edit Contact
-    public Contact editContact(String firstName, Contact updatedContact) {
-
-        for (Contact contact : contactList) {
-
-            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-
-                contact.setLastName(updatedContact.getLastName());
-                contact.setAddress(updatedContact.getAddress());
-                contact.setCity(updatedContact.getCity());
-                contact.setState(updatedContact.getState());
-                contact.setZip(updatedContact.getZip());
-                contact.setPhoneNumber(updatedContact.getPhoneNumber());
-                contact.setEmail(updatedContact.getEmail());
-
-                return contact;
-            }
-        }
-        return null;
-    }
-
-    // UC4 Delete Contact
-    public String deleteContact(String firstName) {
-
-        Iterator<Contact> iterator = contactList.iterator();
-
-        while (iterator.hasNext()) {
-            Contact contact = iterator.next();
-
-            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-                iterator.remove();
-                return "Contact Deleted Successfully";
-            }
+        if (addressBookMap.containsKey(name)) {
+            return "AddressBook already exists";
         }
 
-        return "Contact Not Found";
+        addressBookMap.put(name, new AddressBook());
+
+        return "AddressBook created successfully";
+    }
+
+
+    // Add contact to specific AddressBook
+    public String addContact(String bookName, Contact contact) {
+
+        AddressBook book = addressBookMap.get(bookName);
+
+        if (book == null) {
+            return "AddressBook not found";
+        }
+
+        book.addContact(contact);
+
+        return "Contact added successfully";
+    }
+
+
+    // Get contacts from AddressBook
+    public Object getContacts(String bookName) {
+
+        AddressBook book = addressBookMap.get(bookName);
+
+        if (book == null) {
+            return "AddressBook not found";
+        }
+
+        return book.getContacts();
     }
 }
