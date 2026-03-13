@@ -63,3 +63,5 @@ replay_pid*
 /bin/
 .settings
 /target
+
+.properties
