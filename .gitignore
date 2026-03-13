@@ -65,3 +65,8 @@ replay_pid*
 /target
 
 .properties
+
+.mvn/wrapper
+.gitattributes
+.mvnw
+.mcnw.cmd
